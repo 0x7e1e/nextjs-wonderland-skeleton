@@ -1,6 +1,6 @@
 # Wonderland Finance frontend + Next.js experiment
 
-**Integrating with the codebase, and no `window is undefined` error**
+**And no `window is undefined` error**
 
 ## Notes:
 
