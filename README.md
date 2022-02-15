@@ -4,7 +4,7 @@
 
 ## Notes:
 
-The key file in this project is (web3-context.tsx)[./hooks/web3/web3-context.tsx]. `web3Modal` has a reliance on the `window` browser object. But since Next.js only provides that to effectful code, it needs to be called only when `window` can exist: inside an effectful code block, like `useEffect`. The major code block is this:
+The key file in this project is [web3-context.tsx](./hooks/web3/web3-context.tsx). `web3Modal` has a reliance on the `window` browser object. But since Next.js only provides that to effectful code, it needs to be called only when `window` can exist: inside an effectful code block, like `useEffect`. The major code block is this:
 
 ```javascript
 
