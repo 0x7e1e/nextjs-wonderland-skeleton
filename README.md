@@ -1,3 +1,47 @@
+# Wonderland Finance frontend + Next.js experiment
+
+**Integrating with the codebase, and no `window is undefined` error**
+
+## Notes:
+
+The key file in this project is (web3-context.tsx)[./hooks/web3/web3-context.tsx]. `web3Modal` has a reliance on the `window` browser object. But since Next.js only provides that to effectful code, it needs to be called only when `window` can exist: inside an effectful code block, like `useEffect`. The major code block is this:
+
+```javascript
+
+//////////////// WINDOW CHECK ///////////////////////
+// Because Next.js provides client code access to `window`
+// during dynamic/effectful code, we need to set `web3Modal` with
+// `useEffect`. Also, defensively checking for window, again, in the 
+// conditional (`typeof window !== undefined`).
+const [web3Modal, setWeb3Modal] = useState<null | Web3Modal>(null);
+
+useEffect(() => {
+  if (typeof window !== undefined) {
+    setWeb3Modal(new Web3Modal({
+      cacheProvider: true,
+      providerOptions: {
+        walletconnect: {
+          package: WalletConnectProvider,
+          options: {
+            rpc: {
+              [Networks.AVAX]: getMainnetURI(),
+            },
+          },
+        },
+      },
+    }))
+  }
+}, []);
+//////////////// END WINDOW CHECK ///////////////////////
+
+```
+
+**Not included**
+- integration with state
+- the sushi-fork codebase
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -12,23 +56,3 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
