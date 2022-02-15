@@ -35,6 +35,8 @@ useEffect(() => {
 //////////////// END WINDOW CHECK ///////////////////////
 
 ```
+([Link to code](https://github.com/0x7e1e/nextjs-wonderland-skeleton/blob/e2510acb28670db8ce48155eb81738159135a3ab/hooks/web3/web3-context.tsx#L62))
+
 
 **Not included**
 - integration with state
